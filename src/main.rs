@@ -54,7 +54,7 @@ fn main() -> Result<()> {
             let name = iter.next()?.to_string();
             let group = iter.next()?.parse().ok()?;
 
-            let scores: Vec<_> = iter.filter_map(|s| s.parse::<f32>().ok()).collect();
+            let scores: Vec<_> = iter.filter_map(|s| s.replace(",", ".").parse::<f32>().ok()).collect();
 
             Some(Student {
                 name,
