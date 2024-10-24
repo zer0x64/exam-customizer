@@ -101,17 +101,13 @@ fn main() -> Result<()> {
         let mut doc = Docx::new()
             .add_paragraph(Paragraph::new().add_run(Run::new().add_text(s.name.clone())));
 
-        let idx: Vec<usize> = s
-            .scores
-            .iter()
-            .cloned()
-            .enumerate()
-            .filter(|(_, s)| *s < 0.9f32)
-            .map(|(i, _)| i)
-            .collect();
-
-        for i in idx {
-            let category = &categories[i];
+        for category in s.scores.iter().zip(categories.iter()).filter_map(|(s, c)| {
+            if *s < 0.9f32 {
+                Some(c)
+            } else {
+                None
+            }
+        }) {
             doc = doc.add_paragraph(
                 Paragraph::new().add_run(Run::new().add_text(category.description.clone())),
             );
